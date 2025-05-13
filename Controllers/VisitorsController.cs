@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using dsd603Vm2025StudentVersion.Data;
+using dsd603Vm2025StudentVersion.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using dsd603Vm2025StudentVersion.Data;
-using dsd603Vm2025StudentVersion.Models;
 
 namespace dsd603Vm2025StudentVersion.Controllers
 {
@@ -48,8 +45,19 @@ namespace dsd603Vm2025StudentVersion.Controllers
         // GET: Visitors/Create
         public IActionResult Create()
         {
-            ViewData["StaffNameId"] = new SelectList(_context.StaffNames, "Id", "Id");
-            return View();
+            ViewData["StaffNameId"] = new SelectList(_context.StaffNames, "Id", "Name");
+
+            //Create a new instance of the Visitor
+            var visitor = new Visitors()
+            {
+                DateIn = DateTime.Now
+                // DateOut = DateTime.Now.AddHours(1) // Default to 1 hour later
+            };
+
+
+
+
+            return View(visitor);
         }
 
         // POST: Visitors/Create
@@ -66,7 +74,7 @@ namespace dsd603Vm2025StudentVersion.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StaffNameId"] = new SelectList(_context.StaffNames, "Id", "Id", visitors.StaffNameId);
+            ViewData["StaffNameId"] = new SelectList(_context.StaffNames, "Id", "Name", visitors.StaffNameId);
             return View(visitors);
         }
 
