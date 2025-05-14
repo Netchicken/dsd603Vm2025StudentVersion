@@ -18,6 +18,7 @@ builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddScoped<ITextFileOperations, TextFileOperations>();
+builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
 
 

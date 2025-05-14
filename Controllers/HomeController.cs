@@ -7,12 +7,13 @@ using System.Diagnostics;
 
 namespace dsd603Vm2025StudentVersion.Controllers
 {
-    public class HomeController(ILogger<HomeController> logger, ITextFileOperations textFileOperations) : Controller
+    public class HomeController(ILogger<HomeController> logger, ITextFileOperations textFileOperations, IDataSeeder dataSeeder) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            ViewBag.Welcome = "Welcome to the VMS";
+            logger.LogInformation("IndexAsync method invoked.");
 
+            ViewBag.Welcome = "Welcome to the VMS";
 
             ViewBag.VisitorNew = new Visitors()
             {
@@ -20,22 +21,23 @@ namespace dsd603Vm2025StudentVersion.Controllers
                 LastName = "The Barbarian"
             };
 
-
+            await dataSeeder.SeedAsync();
 
             ViewData["Conditions"] = textFileOperations.LoadConditionsForAcceptanceText();
-
 
             return View();
         }
 
         public IActionResult Privacy()
         {
+            logger.LogInformation("Privacy method invoked.");
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            logger.LogError("Error method invoked.");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
