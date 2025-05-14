@@ -1,20 +1,30 @@
-using System.Diagnostics;
 using dsd603Vm2025StudentVersion.Models;
+using dsd603Vm2025StudentVersion.Services;
+
 using Microsoft.AspNetCore.Mvc;
+
+using System.Diagnostics;
 
 namespace dsd603Vm2025StudentVersion.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, ITextFileOperations textFileOperations) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
+            ViewBag.Welcome = "Welcome to the VMS";
+
+
+            ViewBag.VisitorNew = new Visitors()
+            {
+                FirstName = "Howard",
+                LastName = "The Barbarian"
+            };
+
+
+
+            ViewData["Conditions"] = textFileOperations.LoadConditionsForAcceptanceText();
+
+
             return View();
         }
 
